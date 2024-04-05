@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,8 +13,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    echo 'ok';
-});
 
+//Route::middleware('web.auth')->group( function () {
+
+    Route::get('/' , [HomeController::class, 'index']);
+
+//});
 

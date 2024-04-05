@@ -1,10 +1,10 @@
 <template>
     <div class="row justify-content-center p-0 m-0">
-        <div class="col-6 p-0 m-0">
+        <div class="col-4 p-0 m-0">
             <div v-if="loading" class="d-flex flex-column align-items-center justify-content-center pt-4 pb-4">
                 <i  class="pi pi-spin pi-spinner" style="font-size: 5rem; color: green"></i>
                 <span class="s20 m-4 font-weight-bold">
-                Redireccionando ...
+                Cargando ...
                 </span>
             </div>
             <Panel v-if="!loading">
@@ -12,30 +12,24 @@
                     <div class="d-flex justify-content-center w-100">
                         <img src="https://placehold.co/100x100"/>
                     </div>
-                    
                 </template>
                 <div class="d-flex flex-column">
                     <h3>Iniciar sesión</h3>
                     <form class="m-3" @submit.prevent="submit">
                         <div class="row pt-2 pb-2">
                             <label class="p-0 m-0 text-muted" for="username">Email</label>
-                            <InputText id="username" type="text" v-model="user"/>
+                            <InputText id="username" :invalid="!data.email" type="text" v-model="data.email"/>
                             <small class="text-danger" v-if="errors && errors['email']" id="username-help">* {{  displayError('email') }}.</small>
                         </div>
                         <div class="row pt-2 pb-2">
                             <label class="p-0 m-0 text-muted" for="pass">Password</label>
-                            <InputText id="pass" type="password" v-model="password"/>
+                            <InputText id="pass" :invalid="!data.password" type="password" v-model="data.password"/>
                             <small class="text-danger" v-if="errors && errors['password']" id="username-help">* {{  displayError('password') }}.</small>
-                        </div>
-
-                        <div class="row pt-2 pb-2">
-                            <label class="p-0 m-0 text-muted" for="pass">Password</label>
-                            <small class="text-danger" v-if="errors && errors['password']" id="username-help">* {{  displayError('password') }}.</small>
+                            <small class="text-danger" v-if="message" id="username-help">* {{ message }}</small>
                         </div>
 
                         <div class="row pt-2 pb-2">
                             <Button v-if="!loading" type="submit" label="Login" />
-                            <small class="text-danger mt-2" v-if="!success && error" id="username-help">* {{  error }}</small>
                         </div>
                     </form>
                 </div>
@@ -57,13 +51,14 @@ import { setToken} from '../services/mainService'
 export default {
     data() {
         return {
-            user:'',
-            password:'',
-            data: null,
-            error: null,
+            data: {
+                email:'',
+                password:'',
+            },
             errors: null,
             loading: false,
-            success: false
+            success: false,
+            message: null
         };
     },
     components:{
@@ -83,16 +78,18 @@ export default {
             return error;
         },
         submit(){
+
+            this.loading = true;
             
-            const data =  {
-                email: this.user,
-                password: this.password
-            }
+            loginService.post('login', this.data).then((response) => {
 
-            loginService.post('login', data).then((response) => {
-                if(response.data.status){
+                this.loading = false;
 
-                    const { token } = response.data.data.authorization;
+                const { data } = response;
+
+                if(data.status){
+
+                    const { token } = data.authorization;
 
                     if(token){
 
@@ -106,17 +103,23 @@ export default {
                     }
 
                 }else{
+                    
                     const { error } = response.data.data;
-                    this.error = error;
+                    
+                    this.errors = error;
                 }
             })
             .catch((error) => {
-                
-                console.warn("Error al iniciar sesión: " + error.response.data.data);
+
+                this.loading = false;
+
+                console.warn("Error al iniciar sesión: " + error.message);
                         
-                const { data, msg } = error.response.data;
+                const { data } = error.response.data;
 
                 this.errors = data;
+
+                this.message = 'Error al iniciar sesion, valida tus datos'
             });
         }
     }

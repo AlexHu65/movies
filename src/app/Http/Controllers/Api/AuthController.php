@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Resources\UserResource;
 
+// Resource
+use App\Http\Resources\UserResource;
 //Models
 use App\Models\User;
-//Resources
-use App\Http\Resources\UserResource;
 //Requests
 use App\Http\Requests\LoginRequest;
 
@@ -25,8 +24,8 @@ class AuthController extends BaseController
         
         if (!$token) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
+                'status' => false,
+                'message' => 'Credenciales incorrectas, por favor verifica tus datos',
             ], 401);
         }
         
@@ -56,7 +55,6 @@ class AuthController extends BaseController
      * Get the token array structure.
      *
      * @param  string $token
-     *
      * @return JsonResponse
      */
     protected function respondWithToken(string $token){
@@ -65,7 +63,9 @@ class AuthController extends BaseController
 
             $user = Auth::guard('api')->user();
     
-            return ['authorization' => [
+            return [
+                'status' => true,
+                'authorization' => [
                 'token' => $token,
                 'user' => new UserResource($user),
                 'token_type' => 'bearer',

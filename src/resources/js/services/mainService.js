@@ -1,5 +1,4 @@
 
-// this service is required on root to get token
 export const getToken = () => localStorage.getItem('token');
 
 export const removeToken = () => localStorage.removeItem('token');
