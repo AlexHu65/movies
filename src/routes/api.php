@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MovieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +17,11 @@ use App\Http\Controllers\Api\AuthController;
 */
 
 Route::middleware('auth:api')->group( function () {
-
-
+    Route::resource('movies', MovieController::class);
 });
 
 Route::controller(AuthController::class)->group(function () {
+    Route::get('login/me', 'me');
     Route::post('login', 'login');
-    Route::post('logout', 'logout');
+    Route::get('logout', 'logout');
 });

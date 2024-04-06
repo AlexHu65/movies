@@ -7,11 +7,12 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import PrimeVue from "primevue/config";
 import Tooltip from 'primevue/tooltip';
 
-import Main from './components/Main.vue';
+import Home from './components/Home.vue';
+import Dashboard from './components/Dashboard.vue';
 
 import { createApp } from "vue";
 
-const app = createApp(Main);
+const app = createApp(Home);
 
 app
     .use(PrimeVue, { ripple: true })
@@ -19,4 +20,16 @@ app
     .directive('tooltip', Tooltip);
 
 app.mount(`#app`); 
+
+
+//dashboard
+const appDashboard = createApp(Dashboard);
+
+appDashboard
+    .use(PrimeVue, { ripple: true })
+    .use(VueSweetalert2)
+    .directive('tooltip', Tooltip);
+
+appDashboard.mount(`#dashboard`); 
+
 

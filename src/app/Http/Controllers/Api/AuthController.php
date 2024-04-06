@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 // Resource
 use App\Http\Resources\UserResource;
@@ -15,6 +16,17 @@ use App\Http\Requests\LoginRequest;
 
 class AuthController extends BaseController
 {
+
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct(){
+        $this->middleware(
+            'auth:api', ['except' => ['login']]
+        );
+    }
 
     public function login(LoginRequest $request){
         
@@ -30,6 +42,32 @@ class AuthController extends BaseController
         }
         
         return $this->respondWithToken($token);
+
+    }
+
+     /**
+     * Get the authenticated User.
+     * @return JsonResponse
+     */
+    /**
+     * Get the authenticated User.
+     *
+     * @return JsonResponse
+     */
+    public function me(): JsonResponse{
+        try {
+            
+            $user = auth('api')->user();
+
+            $response = [
+                'user' => new UserResource($user)
+            ];
+
+            return $this->success('User retrivied successfully', $response);
+
+        } catch (\Exception $e) {
+            return $this->error('Excepción', ["error" => $e->getMessage()], $e->getMessage(), 500);
+        }
 
     }
 

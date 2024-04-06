@@ -1,13 +1,14 @@
 <template>
     <section class="w-100">
-        <LoginForm v-if="!token && !loading"/>    
+        <LoginForm v-if="!token && !loading"/>  
     </section>
 </template>
 
 <script>
 
-import LoginForm from './LoginForm.vue';
+import LoginForm from './login/LoginForm.vue';
 import { getToken } from '../services/mainService';
+import { validateSession } from '../helpers/validate';
 
 export default {
     data() {
@@ -20,7 +21,11 @@ export default {
         LoginForm,
     },
     mounted(){
+
         this.token = getToken();
+
+        validateSession();
+
     },
     methods:{
         setLoad(e){
@@ -28,7 +33,7 @@ export default {
             setTimeout(() => {
                 window.location.reload();
             }, 1200);
-        },
+        }
     }
 }
 

@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\MovieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,13 @@ use App\Http\Controllers\Web\HomeController;
 |
 */
 
-//Route::middleware('web.auth')->group( function () {
+    Route::get('/' , function(){
+        return view('login.index');
+    });
 
-    Route::get('/' , [HomeController::class, 'index']);
+    Route::get('/dashboard' , [DashboardController::class, 'index']);
 
-//});
+    Route::resource('dashboard/movies', MovieController::class);
+
+
 
