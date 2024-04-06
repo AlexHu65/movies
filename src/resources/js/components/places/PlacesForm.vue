@@ -107,55 +107,29 @@ import Checkbox from 'primevue/checkbox';
 
                 this.attemp = true;
 
-                if(this.id){
+                const uri = (this.id ? `places/${this.id}` : 'places');
 
-                    putData(`places/${this.id}`,data).then((response) => {
-    
-                        if(response.data.status){
-                            this.showAlert('Guardado con éxito', 'Se ha guardado con exito.', 'success');
-                            setTimeout(()=> {
-                                window.location.href = `${config.baseURL}/dashboard/${section}`
-                            }, 2000);
-                        }else{
-                            this.loading = false;
-                        }
-                    }).catch((error) => {
-                        
+                post(uri, data).then((response) => {
+
+                    if(response.data.status){
+                        this.showAlert('Guardado con éxito', 'Se ha guardado con exito.', 'success');
+                        setTimeout(()=> {
+                            window.location.href = `${config.baseURL}/dashboard/${section}`
+                        }, 2000);
+                    }else{
                         this.loading = false;
-
-                        console.warn(error);
-
-                        const { data } = error.response.data;
-
-                        this.errors = data;
-
-                    })
-
+                    }
+                }).catch((error) => {
                     
-                }else{
-                    post('places',data).then((response) => {
-    
-                        if(response.data.status){
-                            this.showAlert('Guardado con éxito', 'Se ha guardado con exito.', 'success');
-                            setTimeout(()=> {
-                                window.location.href = `${config.baseURL}/dashboard/${section}`
-                            }, 2000);
-                        }else{
-                            this.loading = false;
-                        }
-                    }).catch((error) => {
-                        
-                        this.loading = false;
-    
-                        console.warn(error);
-    
-                        const { data } = error.response.data;
-    
-                        this.errors = data;
-    
-                    })
+                    this.loading = false;
 
-                }
+                    console.warn(error);
+
+                    const { data } = error.response.data;
+
+                    this.errors = data;
+
+                })
             }
         }
 }

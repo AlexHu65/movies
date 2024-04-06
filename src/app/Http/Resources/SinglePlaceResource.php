@@ -16,7 +16,8 @@ class SinglePlaceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'place' => $this->place
+            'place' => $this->place,
+            'active' => ($this->active === 1 ? true : false)
         ];
     }
 }

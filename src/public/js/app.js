@@ -20245,6 +20245,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _movies_MoviesDataTable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../movies/MoviesDataTable.vue */ "./resources/js/components/movies/MoviesDataTable.vue");
 /* harmony import */ var _places_PlacesForm_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../places/PlacesForm.vue */ "./resources/js/components/places/PlacesForm.vue");
 /* harmony import */ var _places_PlacesDataTable_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../places/PlacesDataTable.vue */ "./resources/js/components/places/PlacesDataTable.vue");
+/* harmony import */ var _services_mainService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/mainService */ "./resources/js/services/mainService.js");
+
 
 
 
@@ -20271,6 +20273,12 @@ __webpack_require__.r(__webpack_exports__);
     this.section = section;
   },
   methods: {
+    logout: function logout() {
+      (0,_services_mainService__WEBPACK_IMPORTED_MODULE_4__.removeToken)();
+      setTimeout(function () {
+        window.location.href = '/';
+      }, 1000);
+    },
     handleEventMovie: function handleEventMovie(e) {
       if (e) {
         this.id = e;
@@ -20977,39 +20985,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var data = this.place;
       this.loading = true;
       this.attemp = true;
-      if (this.id) {
-        (0,_services_mainService__WEBPACK_IMPORTED_MODULE_3__.putData)("places/".concat(this.id), data).then(function (response) {
-          if (response.data.status) {
-            _this2.showAlert('Guardado con éxito', 'Se ha guardado con exito.', 'success');
-            setTimeout(function () {
-              window.location.href = "".concat(_config_main__WEBPACK_IMPORTED_MODULE_4__.config.baseURL, "/dashboard/").concat(section);
-            }, 2000);
-          } else {
-            _this2.loading = false;
-          }
-        })["catch"](function (error) {
+      var uri = this.id ? "places/".concat(this.id) : 'places';
+      (0,_services_mainService__WEBPACK_IMPORTED_MODULE_3__.post)(uri, data).then(function (response) {
+        if (response.data.status) {
+          _this2.showAlert('Guardado con éxito', 'Se ha guardado con exito.', 'success');
+          setTimeout(function () {
+            window.location.href = "".concat(_config_main__WEBPACK_IMPORTED_MODULE_4__.config.baseURL, "/dashboard/").concat(section);
+          }, 2000);
+        } else {
           _this2.loading = false;
-          console.warn(error);
-          var data = error.response.data.data;
-          _this2.errors = data;
-        });
-      } else {
-        (0,_services_mainService__WEBPACK_IMPORTED_MODULE_3__.post)('places', data).then(function (response) {
-          if (response.data.status) {
-            _this2.showAlert('Guardado con éxito', 'Se ha guardado con exito.', 'success');
-            setTimeout(function () {
-              window.location.href = "".concat(_config_main__WEBPACK_IMPORTED_MODULE_4__.config.baseURL, "/dashboard/").concat(section);
-            }, 2000);
-          } else {
-            _this2.loading = false;
-          }
-        })["catch"](function (error) {
-          _this2.loading = false;
-          console.warn(error);
-          var data = error.response.data.data;
-          _this2.errors = data;
-        });
-      }
+        }
+      })["catch"](function (error) {
+        _this2.loading = false;
+        console.warn(error);
+        var data = error.response.data.data;
+        _this2.errors = data;
+      });
     }
   }
 });
@@ -21111,12 +21102,9 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_10 = {
   "class": "d-none d-sm-inline mx-1"
 };
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+var _hoisted_11 = {
   "class": "dropdown-menu dropdown-menu-dark text-small shadow"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-  "class": "dropdown-item",
-  href: "#"
-}, "Cerrar sesión")])], -1 /* HOISTED */);
+};
 var _hoisted_12 = {
   "class": "col py-3"
 };
@@ -21125,18 +21113,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_PlacesForm = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("PlacesForm");
   var _component_MoviesDataTable = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("MoviesDataTable");
   var _component_PlacesDataTable = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("PlacesDataTable");
-  return $props.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.user.name), 1 /* TEXT */)]), _hoisted_11])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [($data.action === 'create' || $data.action === 'edit') && $data.section === 'movies' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_MoviesForm, {
+  return $props.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.user.name), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.logout();
+    }),
+    "class": "dropdown-item"
+  }, "Cerrar sesión")])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [($data.action === 'create' || $data.action === 'edit') && $data.section === 'movies' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_MoviesForm, {
     key: 0,
     id: $data.id
   }, null, 8 /* PROPS */, ["id"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ($data.action === 'create' || $data.action === 'edit') && $data.section === 'places' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_PlacesForm, {
-    key: 1
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.action === 'index' && $data.section === 'movies' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_MoviesDataTable, {
+    key: 1,
+    id: $data.id
+  }, null, 8 /* PROPS */, ["id"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.action === 'index' && $data.section === 'movies' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_MoviesDataTable, {
     key: 2,
-    onEditMovie: _cache[0] || (_cache[0] = function (e) {
+    onEditMovie: _cache[1] || (_cache[1] = function (e) {
       return $options.handleEventMovie(e);
     })
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.action === 'index' && $data.section === 'places' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_PlacesDataTable, {
-    key: 3
+    key: 3,
+    onEditPlace: _cache[2] || (_cache[2] = function (e) {
+      return $options.handleEventPlace(e);
+    })
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 

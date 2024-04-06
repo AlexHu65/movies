@@ -35,7 +35,7 @@
                         <span class="d-none d-sm-inline mx-1">{{ user.name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                        <li><a @click="logout()" class="dropdown-item">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </div>
@@ -44,11 +44,11 @@
 
             <MoviesForm :id="id" v-if="(action === 'create' || action === 'edit') && section === 'movies'"/>
 
-            <PlacesForm v-if="(action === 'create' || action === 'edit') && section === 'places'"/>
+            <PlacesForm :id="id" v-if="(action === 'create' || action === 'edit') && section === 'places'"/>
 
             <MoviesDataTable @edit-movie="(e) => handleEventMovie(e)" v-if="action === 'index' && section === 'movies'"/>
             
-            <PlacesDataTable v-if="action === 'index' && section === 'places'"/>
+            <PlacesDataTable  @edit-place="(e) => handleEventPlace(e)" v-if="action === 'index' && section === 'places'"/>
         
         </div>
     </div>
@@ -61,6 +61,7 @@ import MoviesDataTable from '../movies/MoviesDataTable.vue';
 
 import PlacesForm from '../places/PlacesForm.vue';
 import PlacesDataTable from '../places/PlacesDataTable.vue';
+import { removeToken } from '../../services/mainService';
 
 export default {
     data() {
@@ -84,6 +85,12 @@ export default {
         this.section = section;
     },
     methods:{
+        logout(){
+            removeToken();
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000)
+        },
         handleEventMovie(e){
             if(e){
                 this.id = e;

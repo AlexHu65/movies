@@ -94,54 +94,49 @@ class MovieController extends BaseController
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
         try {
+        
+            $params = $request->all();
 
-            try {
+            if ($request->hasFile('poster')) {
+
+                $file = $request->file('poster'); 
             
-                $params = $request->all();
-    
-                if ($request->hasFile('poster')) {
-    
-                    $file = $request->file('poster'); 
+                $folder = 'movies/posters/' . date("Y-m-d");
+
+                $fileName = time() . '_' . $file->getClientOriginalName();
                 
-                    $folder = 'movies/posters/' . date("Y-m-d");
-    
-                    $fileName = time() . '_' . $file->getClientOriginalName();
-                    
-                    if(!Storage::delete($movie->poster)){
-                        return $this->error('File dont deleted', ['error' => 'File not deleted']);
-                    }
+                if(!Storage::delete($movie->poster)){
+                    return $this->error('File dont deleted', ['error' => 'File not deleted']);
+                }
 
-                    $path = $file->storeAs($folder, $fileName, 'public');
-    
-                    if ($path) {
-    
-                        $params['poster'] = $path;
-    
-                        $movie->update($params);
-    
-                        return $this->success('Movie created successfully', new MovieResource($movie));
-    
-                    }else{
-                        return $this->error('File dont updloaded', ['error' => 'File not uploaded']);
-                    }
+                $path = $file->storeAs($folder, $fileName, 'public');
 
-                } else {
+                if ($path) {
 
-                    $params['poster'] = $movie->poster;
+                    $params['poster'] = $path;
 
                     $movie->update($params);
-                }
-    
-                return $this->success('Movie updated successfully', new MovieResource($movie));
 
-    
-            } catch (\Exception $e) {
-                return $this->error('Excepción', ["error" => $e->getMessage()], $e->getMessage(), 500);
+                    return $this->success('Movie created successfully', new MovieResource($movie));
+
+                }else{
+                    return $this->error('File dont updloaded', ['error' => 'File not uploaded']);
+                }
+
+            } else {
+
+                $params['poster'] = $movie->poster;
+
+                $movie->update($params);
             }
-            
+
+            return $this->success('Movie updated successfully', new MovieResource($movie));
+
+
         } catch (\Exception $e) {
-            return $this->error('Exception', ["error" => $e->getMessage()], $e->getMessage(), 500);
+            return $this->error('Excepción', ["error" => $e->getMessage()], $e->getMessage(), 500);
         }
+        
     }
 
     /**

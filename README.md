@@ -109,23 +109,35 @@ docker-compose exec app-movies php artisan storage:link
 
 ```sh
 docker-compose exec app-movies php artisan jwt:secret
-```  
+``` 
 
-5. Install node dependencies:  
+6. Clear cache:  
+
+```sh
+docker-compose exec app-movies php artisan cache:clear
+``` 
+
+7. Clear routes:  
+
+```sh
+docker-compose exec app-movies php artisan routes:clear
+``` 
+
+8. Install node dependencies:  
 
 ```sh
     cd ~/movies/src/ 
     npm i
 ```  
 
-6. Run npm watch to generate laravel mix assets:  
+9. Run npm watch to generate laravel mix assets:  
 
 ```sh
 cd ~/movies/src
 npm run watch
 ```  
 
-7. Run on 
+10. Run on 
 http://localhost:8001/
 
 # Local environments
@@ -160,23 +172,35 @@ php artisan storage:link
 
 ```sh
 php artisan jwt:secret
-```  
+``` 
 
-5. Install node dependencies:  
+6. Clear cache:  
+
+```sh
+php artisan cache:clear
+``` 
+
+7. Clear routes:  
+
+```sh
+php artisan routes:clear
+``` 
+
+8. Install node dependencies:  
 
 ```sh
     cd ~/movies/src/ 
     npm i
 ```  
 
-6. Run npm watch to generate laravel mix assets:  
+9. Run npm watch to generate laravel mix assets:  
 
 ```sh
 cd ~/movies/src
 npm run watch
 ```  
 
-7. Run on 
+10. Run on 
 http://localhost:8001/
 
 ## Login

@@ -20,10 +20,11 @@ use App\Http\Controllers\Api\PlaceController;
 Route::middleware('auth:api')->group( function () {
 
     Route::resource('movies', MovieController::class)->except(['update']);
-    Route::resource('places', PlaceController::class);
+    Route::resource('places', PlaceController::class)->except(['update']);
     
     //Multiform update
     Route::post('movies/{movie}', [MovieController::class, 'update']);
+    Route::post('places/{movie}', [PlaceController::class, 'update']);
 
     Route::get('movies/disable/{movie}', [MovieController::class, 'disable']);
     Route::post('movies/assign/{movie}', [MovieController::class, 'assignPlaces']);

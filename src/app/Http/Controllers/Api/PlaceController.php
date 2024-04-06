@@ -78,10 +78,10 @@ class PlaceController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Place $id)
+    public function show(Place $place)
     {
         try {
-            return $this->success('Place retrieved successfully',  new PlaceResource($place));
+            return $this->success('Place retrieved successfully',  new SinglePlaceResource($place));
         } catch (\Exception $e) {
             return $this->error('Excepción', ["error" => $e->getMessage()], $e->getMessage(), 500);
         }
@@ -90,9 +90,23 @@ class PlaceController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PlaceRequest $request, Place $place)
     {
-        //
+        try {
+
+            $params = $request->all();
+
+            $active = ($params['active'] ? 1 : 0);
+
+            $params['active'] = $active;
+
+            $place->update($params);
+
+            return $this->success('Place updated successfully', new PlaceResource($place));
+
+        } catch (\Exception $e) {
+            return $this->error('Excepción', ["error" => $e->getMessage()], $e->getMessage(), 500);
+        }
     }
 
     /**
