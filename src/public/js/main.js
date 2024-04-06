@@ -20396,18 +20396,18 @@ __webpack_require__.r(__webpack_exports__);
     return {
       user: null,
       data: null,
-      pagination: null
+      pagination: null,
+      page: 1
     };
   },
   components: {},
   mounted: function mounted() {
-    this.getSession();
     this.getData();
   },
   methods: {
     getData: function getData() {
       var _this = this;
-      (0,_services_mainService__WEBPACK_IMPORTED_MODULE_2__.get)('movies').then(function (response) {
+      (0,_services_mainService__WEBPACK_IMPORTED_MODULE_2__.get)("movies?page=".concat(this.page)).then(function (response) {
         if (response.data.status) {
           var data = response.data.data;
           var pagination = response.data.pagination;

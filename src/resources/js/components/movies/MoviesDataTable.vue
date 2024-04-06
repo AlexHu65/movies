@@ -20,19 +20,19 @@ export default {
         return {
             user: null,
             data:null,
-            pagination:null
+            pagination:null,
+            page:1
         };
     },
     components: {
     },
     mounted(){
-        this.getSession();
         this.getData();
     },
     methods:{
         getData(){
 
-            get('movies').then((response) => {
+            get(`movies?page=${this.page}`).then((response) => {
                 
                 if(response.data.status){
 
