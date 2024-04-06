@@ -26,14 +26,6 @@ export default {
 
         validateSession();
 
-    },
-    methods:{
-        setLoad(e){
-            this.loading = e;
-            setTimeout(() => {
-                window.location.reload();
-            }, 1200);
-        }
     }
 }
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\MovieController;
+use App\Http\Controllers\Web\PlaceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,7 @@ use App\Http\Controllers\Web\MovieController;
     Route::get('/dashboard' , [DashboardController::class, 'index']);
 
     Route::resource('dashboard/movies', MovieController::class);
+    Route::resource('dashboard/places', PlaceController::class);
 
 
 

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MovieResource extends JsonResource
+class PlaceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,9 @@ class MovieResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'poster' => $this->poster,
-            'premiere' => $this->premiere,
-            'places' => $this->places,
-            'active' => $this->active,
+            'place' => $this->place,
+            'movies' => $this->movies,
+            'active' => $this->active
         ];
     }
 }

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MovieController;
+use App\Http\Controllers\Api\PlaceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,19 @@ use App\Http\Controllers\Api\MovieController;
 */
 
 Route::middleware('auth:api')->group( function () {
-    Route::resource('movies', MovieController::class);
+
+    Route::resource('movies', MovieController::class)->except(['update']);
+    Route::resource('places', PlaceController::class);
+    
+    //Multiform update
+    Route::post('movies/{movie}', [MovieController::class, 'update']);
+
+    Route::get('movies/disable/{movie}', [MovieController::class, 'disable']);
+    Route::post('movies/assign/{movie}', [MovieController::class, 'assignPlaces']);
+
+    Route::get('places/disable/{place}', [PlaceController::class, 'disable']);
+    Route::get('places/get/all', [PlaceController::class, 'all']);
+
 });
 
 Route::controller(AuthController::class)->group(function () {

@@ -4,29 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Movie extends Model
+
+class Place extends Model
 {
     use HasFactory;
 
     use SoftDeletes;
 
-    protected $table = 'movies';
+    protected $table = 'places';
 
     protected $fillable = [
-        'name',
-        'premiere',
-        'poster',
+        'place',
         'active',
     ];
 
-     /**
-     * Get the places for the movie.
+    /**
+     * Get the movies for the user.
      */
-    public function places(): BelongsToMany
+    public function movies(): BelongsToMany
     {
-        return $this->belongsToMany(Place::class);
+        return $this->belongsToMany(Movie::class);
     }
 }

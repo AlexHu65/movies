@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        
         <div class="row d-flex justify-content-start align-items-center">
             <div class="col-sm-8">
                 <div class="card p-3">
@@ -7,7 +8,7 @@
                         <div class="d-flex justify-content-end">
                             <a href="/dashboard/movies" type="button" class="btn btn-danger"> <i class="pi pi-times-circle"></i></a>
                         </div>
-                        <h1 class="black">Nueva película</h1>
+                        <h1 class="black">{{ id ? 'Editar' : 'Nueva' }} película</h1>
                         <div class="mb-3">
                             <div class="row p-2">
                                 <label for="name" class="form-label black">Nombre</label>
@@ -21,7 +22,6 @@
                                 <label for="premiere" class="form-label black">F. Publicación</label>
                                 <Calendar class="m-0 p-0" id="premiere" v-model="movie.premiere" />
                                 <small class="text-danger" v-if="errors && errors['premiere']" id="premiere-help">* {{  displayError('premiere') }}.</small>
-
                             </div>
                         </div>
                         <div class="mb-3">
@@ -31,7 +31,8 @@
                                 <small class="text-danger" v-if="errors && errors['poster']" id="poster-help">* {{  displayError('poster') }}.</small>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary"><i v-if="loading" class="pi pi-spin pi-spinner" style="color: green"></i> <span v-if="!loading">Guardar</span></button>
+                        <button v-if="!loading" type="submit" class="btn btn-primary">Guardar</button>
+                        <i v-if="loading" class="pi pi-spin pi-spinner" style="color: green"></i>
                         
                     </form>
                 </div>
@@ -55,13 +56,20 @@ import { config } from '../../config/main';
                 errors: null,
                 loading: false,
                 attemp: false,
+                action: action
             };
         },
         components: {
             Calendar,
             InputText
         },
+        props:{
+            id:null
+        },
         mounted(){
+            if(this.id){
+                this.fetchMovie(this.id);
+            }
         },
         methods:{
             displayError(key){
@@ -71,6 +79,24 @@ import { config } from '../../config/main';
             handleFileChange(event){
                 const [file] = event.target.files;
                 this.movie.poster = file;
+            },
+            fetchMovie(id){
+
+                this.loading = true;
+                
+                get(`movies/${id}`).then((response) => {
+                
+                    if(response.data.status){
+
+                        const { data } = response.data;
+
+                        this.movie = data;
+
+                        this.loading = false;
+                    }
+
+                }).catch(err => console.warn('err', err));
+
             },
             showAlert(title, text, icon){
                return this.$swal.fire({
@@ -91,15 +117,15 @@ import { config } from '../../config/main';
 
                 this.attemp = true;
 
-                post('movies',data).then((response) => {
+                const uri = (this.id ? `movies/${this.id}` : 'movies');
 
-                    console.log('estatus', response.data.status);
+                post(uri, data).then((response) => {
 
                     if(response.data.status){
-                        this.showAlert('Guardado con éxito');
+                        this.showAlert('Guardado con éxito', 'Se ha guardado con exito.', 'success');
                         setTimeout(()=> {
                             window.location.href = `${config.baseURL}/dashboard/${section}`
-                        }, 2000);
+                        }, 3000);
                     }else{
                         this.loading = false;
                     }

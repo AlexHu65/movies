@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MovieController extends Controller
+class PlaceController extends Controller
 {
 
-    protected $section = 'movies';
+    protected $section = 'places';
 
     /**
      * Display a listing of the resource.
@@ -21,7 +21,6 @@ class MovieController extends Controller
         ];
 
         return view('dashboard.dataTables.index', $data);
-        
     }
 
     /**
@@ -44,11 +43,9 @@ class MovieController extends Controller
     {
         $data = [
             'section' => $this->section,
-            'action' => __FUNCTION__,
+            'action' => __FUNCTION__
         ];
 
         return view('dashboard.forms.index', $data);
     }
-
-    
 }
