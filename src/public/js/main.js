@@ -20395,7 +20395,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       user: null,
-      data: null
+      data: null,
+      pagination: null
     };
   },
   components: {},
@@ -20408,7 +20409,8 @@ __webpack_require__.r(__webpack_exports__);
       (0,_services_mainService__WEBPACK_IMPORTED_MODULE_2__.get)('movies').then(function (response) {
         if (response.data.status) {
           var data = response.data.data;
-          console.log('d', data);
+          var pagination = response.data.pagination;
+          console.log('pag', pagination);
         }
       })["catch"](function (err) {
         return console.warn('err', err);
