@@ -33,9 +33,16 @@ export default {
         getData(){
 
             get('movies').then((response) => {
+                
                 if(response.data.status){
+
                     const { data } = response.data;
+                
                     const { pagination } = response.data;
+
+                    this.data = data;
+                
+                    this.pagination = pagination;
                 }
 
             }).catch(err => console.warn('err', err));

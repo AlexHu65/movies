@@ -20406,23 +20406,26 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getData: function getData() {
+      var _this = this;
       (0,_services_mainService__WEBPACK_IMPORTED_MODULE_2__.get)('movies').then(function (response) {
         if (response.data.status) {
           var data = response.data.data;
           var pagination = response.data.pagination;
+          _this.data = data;
+          _this.pagination = pagination;
         }
       })["catch"](function (err) {
         return console.warn('err', err);
       });
     },
     getSession: function getSession() {
-      var _this = this;
+      var _this2 = this;
       (0,_helpers_validate__WEBPACK_IMPORTED_MODULE_0__.getMe)().then(function (response) {
         var _response$data = response.data,
           status = _response$data.status,
           data = _response$data.data;
         if (status) {
-          _this.user = data.user;
+          _this2.user = data.user;
         } else {
           window.location.href = "".concat(_config_main__WEBPACK_IMPORTED_MODULE_1__.config.baseURL);
         }
