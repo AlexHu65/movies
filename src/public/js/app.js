@@ -20403,7 +20403,6 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data.status) {
           var data = response.data.data;
           var pagination = response.data.pagination;
-          console.log('pag', pagination);
         }
       })["catch"](function (err) {
         return console.warn('err', err);
