@@ -204,7 +204,7 @@ npm run watch
 http://localhost:8001/
 
 ## Login
-Please use this credentials
+Please use these credentials
 
 ```sh
 email alejandrotsu23@gmail.com
